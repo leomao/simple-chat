@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Home Page</title>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+    <script src="js/comm.js"></script>
+    <link rel="stylesheet" href="css/main.css">
+  </head>
+  <body>
+    <div class="container">
+      <div id="setup" class="row text-center">
+        <form class="form-inline" role="form">
+          <div class="form-group">
+            <input id="name" type="text" class="form-control"
+            placeholder="your name">
+            <button id="connect" class="btn btn-default" type="button">Connect</button>
+          </div>
+        </form>
+      </div>
+      <div id="chat_room" class="row">
+        <div class="col-md-2">
+          <div id="conv_list" class="list-group">
+          </div>
+        </div>
+        <div class="col-md-8">
+          <div id="conversation">
+          </div>
+          <div class="input-group">
+            <input id="message" type="text" class="form-control"
+            placeholder="enter message...">
+            <span class="input-group-btn">
+              <button id="send" class="btn btn-default" type="button">Send</button>
+            </span>
+          </div>
+        </div>
+        <div class="col-md-2">
+          <table id="user_list" class="table">
+            <thead>
+              <tr>
+                <th>Online Users</th>
+              </tr>
+            </thead>
+            <tbody>
+            </tbody>
+          </table>
+        </div>
+    </div>
+  </body>
+</html>

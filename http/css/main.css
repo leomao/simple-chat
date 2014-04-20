@@ -1,0 +1,35 @@
+html, body {
+    font-size: 12pt;
+}
+
+#setup {
+    margin-top: 20px;
+}
+
+#chat_room {
+    margin-top: 20px;
+}
+
+#conversation {
+    height: 400px;
+    overflow: auto;
+    border: 3px solid #444;
+    margin-bottom: 10px;
+    padding: 10px;
+}
+
+.user {
+    cursor: pointer;
+}
+
+.user:hover {
+    background-color: #EEE;
+}
+
+#conv_list > a > .glyphicon {
+    visibility: hidden;
+}
+
+#conv_list > a:hover > .glyphicon {
+    visibility: visible;
+}
