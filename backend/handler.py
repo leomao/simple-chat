@@ -16,9 +16,9 @@ class WebSocketHandler:
     @asyncio.coroutine
     def _send(self, ws, mes):
         try:
-            yield from ws.send(mes)
+            yield from ws.send(mes.encode())
         except websockets.exceptions.InvalidState:
-            logger.WARNING("EInvalidState")
+            logger.warning("EInvalidState")
             return "EInvalidState"
 
     @asyncio.coroutine
@@ -40,6 +40,7 @@ class WebSocketHandler:
             data = yield from ws.recv()
             if data is None or data == "pong":
                 continue
+            data = data.decode()
             data = json.loads(data)
             if data['iden'] != iden:
                 yield from self._send(ws, "EWrongIden")
@@ -58,8 +59,9 @@ class WebSocketHandler:
                 yield from self._send(ws, json.dumps({"result":"successed"}))
         try:
             del self.users[name]
+            logger.info("{} disconnected".format(name))
         except KeyError:
-            logger.waring("{} not found in users".format(name))
+            logger.warning("{} not found in users".format(name))
         finally:
             yield from self.update_list()
 
