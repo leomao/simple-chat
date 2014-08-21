@@ -17,7 +17,7 @@ function show_conv() {
 }
 
 function change_conv() {
-    if (now_dom != undefined)
+    if (typeof now_dom !== "undefined")
         now_dom.toggleClass("active");
     now_dom = $(this);
     now_dom.toggleClass("active");
@@ -43,7 +43,8 @@ function update(from) {
 function send_message() {
     var mes = $("#message").val();
     $("#message").val("");
-    if (ws == undefined) {
+    if (typeof ws === "undefined" || ws.readyState == ws.CLOSED
+       || ws.readyState == ws.CLOSING) {
         console.log("doesn't connect");
         return;
     }
@@ -52,7 +53,7 @@ function send_message() {
 
     var data = {'to': now, 'message':mes, 'iden':iden};
     try {
-        ws.send(JSON.stringify(data));
+        ws.send(new Blob([JSON.stringify(data)], {'type':'text/css'}));
     }
     catch (err) {
         console.log("connection broken");
@@ -62,7 +63,7 @@ function send_message() {
 
 function get_message(from, mes) {
     console.log("get from", from, ":", mes);
-    if (convs[from] == undefined) {
+    if (typeof convs[from] === "undefined") {
         convs[from] = "";
         add_conv(from);
     }
@@ -101,7 +102,7 @@ function update_users() {
 }
 
 function pong() {
-    if (ws != undefined) {
+    if (typeof ws !== "undefined" && ws.readyState == ws.OPEN) {
         try {
             ws.send("pong");
         }
@@ -123,17 +124,20 @@ function connect() {
             keepalive = setInterval(pong, 30000);
         }
         ws.onmessage = function(evt){
-            console.log(evt.data);
-            var data = JSON.parse(evt.data);
-            if (data.iden)
-                iden = data.iden;
-            if (data.message)
-                get_message(data.from, data.message);
-            if (data.user_list) {
-                users = data.user_list;
-                console.log(users);
-                update_users();
+            var reader = new FileReader();
+            reader.onload = function(evt) {
+                var data = JSON.parse(evt.target.result);
+                if (data.iden)
+                    iden = data.iden;
+                if (data.message)
+                    get_message(data.from, data.message);
+                if (data.user_list) {
+                    users = data.user_list;
+                    console.log(users);
+                    update_users();
+                }
             }
+            reader.readAsText(evt.data);
         }
         ws.onclose = function(){
             clearInterval(keepalive);
@@ -158,7 +162,7 @@ $(function(){
 
     $("#user_list").on("click", ".user", function(){
         var username = $(this).text();
-        if (convs[username] == undefined) {
+        if (typeof convs[username] === "undefined") {
             convs[username] = "";
             add_conv(username);
         }
