@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 import asyncio
-import websockets
+import websockets.server
 import logging
 
 import handler
@@ -11,12 +11,12 @@ async_logger.setLevel(logging.WARNING)
 
 han = handler.WebSocketHandler()
 
-start_server = websockets.serve(han, 'localhost', 9007)
+start_server = websockets.server.serve(han, 'localhost', 9007)
 
 loop = asyncio.get_event_loop()
 s = loop.run_until_complete(start_server)
 
-print('serving on', s.sockets[0].getsockname())
+print('serving...')
 try:
     loop.run_forever()
 except KeyboardInterrupt:
